@@ -8,10 +8,19 @@ function generateInitialCircles(countPerColor) {
         circles.push({ id: i * 2 + 1, color: 'red', sorted: false });
         circles.push({ id: i * 2 + 2, color: 'blue', sorted: false });
     }
-    return circles;
+    return shuffleArray(circles);
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
 const initialCircles = generateInitialCircles(5);
+
 
 export default function Game() {
     const [circles, setCircles] = useState(initialCircles);

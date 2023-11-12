@@ -2,12 +2,16 @@
 
 import { useState } from 'react';
 
-const initialCircles = [
-    { id: 1, color: 'red', sorted: false },
-    { id: 2, color: 'blue', sorted: false },
-    { id: 3, color: 'blue', sorted: false },
-    { id: 4, color: 'red', sorted: false },
-];
+function generateInitialCircles(countPerColor) {
+    let circles = [];
+    for (let i = 0; i < countPerColor; i++) {
+        circles.push({ id: i * 2 + 1, color: 'red', sorted: false });
+        circles.push({ id: i * 2 + 2, color: 'blue', sorted: false });
+    }
+    return circles;
+}
+
+const initialCircles = generateInitialCircles(5);
 
 export default function Game() {
     const [circles, setCircles] = useState(initialCircles);
@@ -29,7 +33,7 @@ export default function Game() {
 
     return (
         <div className="flex flex-col h-screen bg-gray-900">
-            <div className="mb-4 text-center">
+            <div className="my-12 text-center">
                 <h1 className="text-4xl font-bold">Color Sorting Game</h1>
                 <p className="text-lg">Welcome to the game. Sort the circles by dragging them to the right bucket.</p>
             </div>

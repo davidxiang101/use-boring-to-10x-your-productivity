@@ -23,7 +23,7 @@ export default function Game() {
         <div className="flex flex-col h-screen bg-gray-900">
             <div className="mb-4 text-center">
                 <h1 className="text-4xl font-bold">Color Sorting Game</h1>
-                <p className="text-lg">Welcome to the game. Sort the circles by color.</p>
+                <p className="text-lg">Welcome to the game. Sort the circles by dragging them to the right bucket.</p>
             </div>
             <div className="flex-grow overflow-auto flex justify-center">
                 <div className="circles-container flex flex-wrap justify-center">

@@ -1,4 +1,4 @@
-export default function Game() {
+export default function GamePage() {
     return (
         <div className="game-container">
             <h1>Color Sorting Game</h1>

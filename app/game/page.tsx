@@ -9,14 +9,22 @@ const initialCircles = [
     { id: 4, color: 'red', sorted: false },
 ];
 
-
 export default function Game() {
     const [circles, setCircles] = useState(initialCircles);
 
-    const handleCircleClick = (circleId) => {
-        setTimeout(() => {
-            // Update the state to mark the circle as sorted
-        }, 1000); // Delay of 1 second
+    const handleDragStart = (e, circle) => {
+        e.dataTransfer.setData('circleId', circle.id);
+    };
+
+    const handleDrop = (e, bucketColor) => {
+        e.preventDefault();
+        const circleId = e.dataTransfer.getData('circleId');
+        setCircles(prevCircles => prevCircles.map(circle => {
+            if (circle.id === parseInt(circleId) && circle.color === bucketColor) {
+                return { ...circle, sorted: true };
+            }
+            return circle;
+        }));
     };
 
     return (
@@ -27,23 +35,46 @@ export default function Game() {
             </div>
             <div className="flex-grow overflow-auto flex justify-center">
                 <div className="circles-container flex flex-wrap justify-center">
-                    {circles.map(circle => (
+                    {circles.filter(circle => !circle.sorted).map(circle => (
                         <div
                             key={circle.id}
-                            className="w-12 h-12 rounded-full m-2"
+                            className="w-12 h-12 rounded-full m-2 cursor-pointer"
                             style={{ backgroundColor: circle.color }}
-                            onClick={() => handleCircleClick(circle.id)}
+                            draggable="true"
+                            onDragStart={(e) => handleDragStart(e, circle)}
                         />
                     ))}
                 </div>
             </div>
             <div className="py-4">
                 <div className="buckets-container flex justify-center gap-4">
-                    <div className="bucket bg-blue-400 border border-blue-500 rounded-lg p-4 w-48 h-48 flex flex-wrap justify-center items-center">
-                        {/* Bucket 1 - for a blue color */}
+                    <div
+                        className="bucket bg-blue-400 border border-blue-500 rounded-lg p-4 w-48 h-48 flex flex-wrap justify-center items-center"
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => handleDrop(e, 'blue')}
+                    >
+                        {/* Bucket 1 - for blue color */}
+                        {circles.filter(circle => circle.sorted && circle.color === 'blue').map(circle => (
+                            <div
+                                key={circle.id}
+                                className="w-12 h-12 rounded-full m-2"
+                                style={{ backgroundColor: circle.color }}
+                            />
+                        ))}
                     </div>
-                    <div className="bucket bg-red-400 border border-red-500 rounded-lg p-4 w-48 h-48 flex flex-wrap justify-center items-center">
+                    <div
+                        className="bucket bg-red-400 border border-red-500 rounded-lg p-4 w-48 h-48 flex flex-wrap justify-center items-center"
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => handleDrop(e, 'red')}
+                    >
                         {/* Bucket 2 - for red color */}
+                        {circles.filter(circle => circle.sorted && circle.color === 'red').map(circle => (
+                            <div
+                                key={circle.id}
+                                className="w-12 h-12 rounded-full m-2"
+                                style={{ backgroundColor: circle.color }}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
